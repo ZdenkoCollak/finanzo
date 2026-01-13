@@ -9,7 +9,7 @@ MarkupSafe==3.0.3
 psycopg2-binary==2.9.11
 python-dotenv==1.2.1
 Werkzeug==3.1.4
-pip freeze > requirements.txt
 flask_sqlalchemy==3.0.5
 gunicorn==20.1.0
 SQLAlchemy==2.0.19
+
