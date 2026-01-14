@@ -8,18 +8,24 @@ from datetime import date, datetime, timedelta
 from decimal import Decimal
 import traceback
 from sqlalchemy import func
-
+import os
 app = Flask(__name__)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:FINANzo128@localhost/finanzo_db"
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    f"postgresql://{os.environ['DB_USER']}:"
+    f"{os.environ['DB_PASSWORD']}@"
+    f"{os.environ['DB_HOST']}:"
+    f"{os.environ['DB_PORT']}/"
+    f"{os.environ['DB_NAME']}"
+    "?sslmode=require"
+)
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
-with app.app_context():
-    db.create_all()
-    print(db.engine.url)
+
 
 
 def create_budget_for_user(user_uid: str):
@@ -266,8 +272,3 @@ def get_stats_by_category(user_uid, type):
         }
         for name, color, total in results
     ]), 200
-
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
